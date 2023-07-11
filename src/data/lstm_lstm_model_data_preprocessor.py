@@ -5,8 +5,8 @@ from typing import Any, Tuple
 
 import numpy as np
 import pandas as pd
-from pytorch_forecasting.data import TimeSeriesDataSet
-from pytorch_forecasting.data.encoders import EncoderNormalizer
+from pytorch-forecasting.data import TimeSeriesDataSet
+from pytorch-forecasting.data.encoders import EncoderNormalizer
 
 from src import PROJECT_PATH
 from src.data.data_preprocessor import DataPreprocessor
