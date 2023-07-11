@@ -19,7 +19,7 @@
     <item>Evaluate results
   </enumerate-numeric>
 
-  <section|Choosing stations>
+  <section|Choosing stations><label|Choosing stations>
 
   We have water level data from 56 stations, new/old, close/far,
   up-/downstream. Reducing the number of stations considered will help us
@@ -50,7 +50,7 @@
   if the results atleast appear to be making sense.
 
   <\big-figure|TODO>
-    Map with Stations colorized by <math|t<rsub|X>>
+    Stations colorized by <math|t<rsub|X>>
   </big-figure>
 
   <subsection|Different types of correlation>
@@ -71,9 +71,9 @@
     Map, Ganger Causality
   </big-figure>
 
-  \ 
+  \ TODO choose stations for prediction\ 
 
-  <section|Training data>
+  <section|Selecting Training data>
 
   As the riverbed constantly changes (errosion, floods, dams, <text-dots>) we
   want to choose the training data carefully. If we would for example do the
@@ -101,6 +101,46 @@
     biggest floods in Szeged
   </big-table>
 
+  TODO: map
+
+  TODO: does this influence our choice in stations? compare with chapter
+  <reference|Choosing stations>.
+
+  \;
+
+  <section|Choosing a model>
+
+  We are considering 3 different models.
+
+  <\enumerate-roman>
+    <item>The <strong|LSTM> (= Long-Short Term Memory) takes the water level
+    data of a single day as well as its memory as an input and outputs a
+    prediction for the next day as well as its new memory for the next day.
+    To get a good prediction one has to feed the model data from several
+    consecutive days leading up to the present.
+
+    <item>The <strong|TFT> (= Temporal Fusion Transformer) takes water level
+    data from many days as input and will output a prediction. This
+    prediction could either be for all stations on the next day (recurrsively
+    predict 2 to 7 days ahead) or just the 7 day prediction for Szeged.
+
+    <item>A NN that takes a <strong|fixed number of days> as an input and
+    provides a prediction (again either a single day prediction for all
+    stations or the 7 day prediction for Szeged directly).
+
+    This approach does not yet incooperate the ordering of the inputs into
+    account. Which is generally not the best approach as the model will have
+    to figure it out during training.
+
+    One could use a <strong|CNN> (= Convolutional Neural Network) which
+    convolutes over the time dimension of the input. The structure of such a
+    CNN would suggest the recurrsive one day prediction strategy.
+  </enumerate-roman>
+
+  TODO
+
+  \;
+
   \;
 </body>
 
@@ -112,19 +152,22 @@
 
 <\references>
   <\collection>
+    <associate|Choosing stations|<tuple|2|?|../../../../../.TeXmacs/texts/scratch/no_name_4.tm>>
     <associate|auto-1|<tuple|1|1|../../../../../.TeXmacs/texts/scratch/no_name_4.tm>>
     <associate|auto-10|<tuple|5|2|../../../../../.TeXmacs/texts/scratch/no_name_4.tm>>
     <associate|auto-11|<tuple|3|2|../../../../../.TeXmacs/texts/scratch/no_name_4.tm>>
     <associate|auto-12|<tuple|1|2|../../../../../.TeXmacs/texts/scratch/no_name_4.tm>>
     <associate|auto-13|<tuple|2|2|../../../../../.TeXmacs/texts/scratch/no_name_4.tm>>
+    <associate|auto-14|<tuple|4|?|../../../../../.TeXmacs/texts/scratch/no_name_4.tm>>
+    <associate|auto-15|<tuple|4.1|?|../../../../../.TeXmacs/texts/scratch/no_name_4.tm>>
     <associate|auto-2|<tuple|2|1|../../../../../.TeXmacs/texts/scratch/no_name_4.tm>>
     <associate|auto-3|<tuple|2.1|1|../../../../../.TeXmacs/texts/scratch/no_name_4.tm>>
     <associate|auto-4|<tuple|1|1|../../../../../.TeXmacs/texts/scratch/no_name_4.tm>>
     <associate|auto-5|<tuple|2|1|../../../../../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-6|<tuple|2.2|1|../../../../../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-7|<tuple|3|1|../../../../../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-8|<tuple|4|1|../../../../../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-9|<tuple|2.3|1|../../../../../.TeXmacs/texts/scratch/no_name_4.tm>>
+    <associate|auto-6|<tuple|2.2|2|../../../../../.TeXmacs/texts/scratch/no_name_4.tm>>
+    <associate|auto-7|<tuple|3|2|../../../../../.TeXmacs/texts/scratch/no_name_4.tm>>
+    <associate|auto-8|<tuple|4|2|../../../../../.TeXmacs/texts/scratch/no_name_4.tm>>
+    <associate|auto-9|<tuple|2.3|2|../../../../../.TeXmacs/texts/scratch/no_name_4.tm>>
   </collection>
 </references>
 
