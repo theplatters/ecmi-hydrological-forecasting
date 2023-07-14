@@ -2,18 +2,15 @@ import os
 
 import pandas as pd
 
-os.environ["QT_API"] = "pyqt5"
-
 import numpy as np
 import matplotlib
 import scipy
 import matplotlib.widgets as mwidgets
 
-matplotlib.use('Qt5Agg')
-
 import matplotlib.pyplot as plt
 
-from matplotlib.widgets import RangeSlider
+os.environ["QT_API"] = "pyqt5"
+matplotlib.use('Qt5Agg')
 
 
 def pearson(dx, dy):
@@ -55,7 +52,7 @@ def calculate_correlations(df, starting_point, interval, method):
             starting_point = starting_point + day
             corr(df, station, starting_point, interval, method, l, pv, period1)
         starting_point = sp + day
-        for i in np.linspace(0, 50, 50):
+        for i in np.linspace(0, 50, 31):
             starting_point = starting_point - day
             corr(df, station, starting_point, interval, method, l, pv, period1)
         cm = np.transpose(np.reshape(np.array(l), (-1, len(df.columns))))
@@ -63,7 +60,8 @@ def calculate_correlations(df, starting_point, interval, method):
         cross_correlations.append(cm)
     return cross_correlations
 
-"""
+
+# %%
 data_training = pd.read_csv("../data/data_training.csv")
 data_validation = pd.read_csv('../data/data_validation.csv')
 
@@ -73,8 +71,8 @@ data = data.set_index('Date')
 meta = pd.read_csv("../data/meta.csv")
 
 meta = meta.set_index("reg_number")
-meta_nans_removed = meta.loc[list(map(int,data.columns))]
-
+meta_nans_removed = meta.loc[list(map(int, data.columns))]
+# %%
 cr = calculate_correlations(data, pd.Timestamp('2005-01-01'), pd.Timedelta(52, 'w'), pearson)
 
 correlation_tensor = {}
@@ -84,47 +82,102 @@ for idx, station in enumerate(data.columns):
 print(correlation_tensor['1515'])
 
 correlation_tensor_max_corr = {k: v.idxmax() - 5 for k, v in correlation_tensor.items()}
-"""
 
+# %%
+correlation_tensor_max_corr['2275']
+# %%
+marker_dict = {
+    'Tisza': 'o',
+    'Maros': 'v',
+    'Kettős-Körös': '^',
+    'Hármas-Körös': 'x',
+    'Szamos': '+',
+    'Sebes-Körös': 'D',
+    'Bodrog': 'h',
+    'Túr': 'd',
+    'Sajó': 'X',
+    'Kraszna': '1',
+    'Hernád': '2',
+    'Berettyó': '3',
+    'Fekete-Körös': '4',
+    'Fehér-Körös': ',',
+    'Zagyva': '<'
+}
+
+x_max = meta_nans_removed['EOVx'].max() + 10000
+x_min = meta_nans_removed['EOVx'].min() - 10000
+y_min = meta_nans_removed['EOVy'].min() + 10000
+y_max = meta_nans_removed['EOVy'].max() - 10000
+
+
+# %%
 def rgb(val):
     return [[0.4 + min(val * 0.08, 0.6), 0.2, 0.00 + min(abs(val * 0.10), 1.0)]]
 
 
-def draw():
-    for index, row in meta_nans_removed.iterrows():
-        a = plt.scatter(row['EOVx'], row['EOVy'], c=rgb(row['maximum_correlation']), marker=marker_dict[row['river']])
-        if row['river'] not in rivers:
-            rivers.append(row['river'])
-            actors.append(a)
-    plt.legend(actors, rivers)
+def draw(station, slider_value):
+    ax.clear()
+    stations_to_draw = correlation_tensor_max_corr[station].loc[
+        abs(correlation_tensor_max_corr[station]) <= slider_value]
+    for other_station, delay in stations_to_draw.items():
+        if station == other_station:
+            ax.scatter(meta_nans_removed.loc[int(other_station), 'EOVx'],
+                       meta_nans_removed.loc[int(other_station), 'EOVy'], c=[[0.0, 0.9, 0.9]],
+                       marker=marker_dict[meta_nans_removed.loc[int(other_station), 'river']])
+        else:
+            ax.scatter(meta_nans_removed.loc[int(other_station), 'EOVx'],
+                       meta_nans_removed.loc[int(other_station), 'EOVy'], c=rgb(delay),
+                       marker=marker_dict[meta_nans_removed.loc[int(other_station), 'river']])
+
+    ax.set_xlim(x_min, x_max)
+    ax.set_ylim(y_min, y_max)
     plt.show()
 
 
+# %%
 def update_plot(text):
-    l = correlation_tensor_max_corr[text]
-    # Parse the text and update the scatterplot accordingly
-    # Here, I'm assuming the text contains comma-separated x, y coordinates
+    draw(text, slider.val)
 
-    # Split the text by commas and convert the coordinates to floats
-    coordinates = [float(coord.strip()) for coord in text.split(',')]
 
-    # Split the coordinates into x and y lists
-    x = coordinates[::2]
-    y = coordinates[1::2]
+def update_slider(val):
+    draw(textbox.text, val)
 
-    # Update the scatterplot data
-    scatter.set_offsets(list(zip(x, y)))
 
-    # Redraw the plot
-    plt.draw()
+def update(frame):
+    draw('2275', frame)
 
+
+# %%
+import matplotlib.animation as animation
+
+# %%
+fig = plt.figure(figsize=(8, 6))
+# gs = matplotlib.gridspec.GridSpec(3, 1, height_ratios=[1, 1, 10])  # Create a GridSpec layout with 3 rows
+
+# Create the plot
+ax = plt.subplot()  # Assign the bottom row to the plot
+ax.set_xlabel('X Label')
+ax.set_ylabel('Y Label')
 
 # Create a textbox widget
-axbox = plt.axes([0.1, 0.05, 0.8, 0.075])
-textbox = mwidgets.TextBox(axbox, 'Enter coordinates:')
+# ax_textbox = plt.subplot(gs[0])  # Assign the top row to the textbox
+# textbox = mwidgets.TextBox(ax_textbox, 'Enter coordinates:')
 
-# Register the update function to be called when the textbox value changes
-textbox.on_submit(update_plot)
+# Create a slider widget
+# ax_slider = plt.subplot(gs[1])  # Assign the middle row to the slider
+# slider = mwidgets.Slider(ax_slider, 'Slider', 0, 10, valinit=0,valstep=1)
 
-# Show the plot
-plt.show()
+# Register the update functions to be called when the textbox value or slider value changes
+# textbox.on_submit(update_plot)
+# slider.on_changed(update_slider)
+
+
+# Adjust the spacing between subplots
+plt.subplots_adjust(hspace=0.1)
+Writer = animation.writers['imagemagick']
+writer = Writer(fps=15, metadata=dict(artist='Me'))
+
+ani = animation.FuncAnimation(fig=fig, func=update, frames=10, interval=500)
+ani.save(filename='corr_animated.gif', writer='pillow',fps=1)
+
+# plt.show()
