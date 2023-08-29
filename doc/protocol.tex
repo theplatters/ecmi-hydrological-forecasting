@@ -29,7 +29,7 @@
 
 \begin{document}
 
-\resizebox{1\columnwidth}{!}{\includegraphics{/home/lorenz/Downloads/ecmi-logo(1).png}}
+\resizebox{1\columnwidth}{!}{\includegraphics{ecmi-logo(1).png}}
 
 ECMI Modelling Week 2023
 
@@ -97,12 +97,12 @@ University of Szeged, Bolyai Institute
 \section{Introduction}
 
 Szeged is often called City of Sunshine, and yet the people from Szeged often
-have to worry about too high water levels. The Tisza river making its way
+have to worry about too high water levels. The Tisza river flowing
 through the city, has historically brought several devastating floods to the
 citizens of Szeged. The goal of our project was to create an algorithm that
 can predict the water levels for the next week. Of course there have been
-serveral, very promising attempts at this before, each with its own benefits
-and faults. Some of the tricky aspects of this problem include the ever
+several, very promising attempts at this before, each with its own benefits
+and flaws. Some tricky aspects of this problem include the ever
 changing river bed, the very shallow slope of the Tisza and incomplete data
 due to measurement stations being constructed/removed. In a recent
 paper{\cite{WaterLevel2023}}, co-authored by our instructor, they used an ML
@@ -113,7 +113,7 @@ this approach, leading to promising and interesting results.
 
 \section{Report}
 
-The data our instructors provided us with consisted of water level
+The data, our instructors provided us, consisted of water level
 measurements at several points of the river Tisza before as well as after
 Szeged. Figure \ref{map} shows a map of all the 56 measurement stations (blue,
 green, red) in the original dataset, as well as several upstream dams
@@ -121,17 +121,17 @@ green, red) in the original dataset, as well as several upstream dams
 which originates in the north of Szeged. However there are also several
 stations along sidearms. Notably the dataset also features 3 stations past
 Szeged. These are of importance as the slope of the Tisza is very shallow. If
-the Danube, which the Tisza flows into, carrys more water than usual, the
+the Danube, which the Tisza flows into, carries more water than usual, the
 water of the Tisza can not discharge at its usual rate. This is the reason why
 the floods of the Tisza river often last several weeks. The dataset contains
-daily measurments starting in 1951 up until 2020. The two biggest floods
+daily measurements starting in 1951 up until 2020. The two biggest floods
 contained in the dataset were in the years 1970 and 2006, each of them lasting
 roughly one month.
 
 \
 
 \begin{figure}[h]
-  \resizebox{0.5\columnwidth}{!}{\includegraphics{/home/lorenz/Downloads/map_everything4(1).jpg}}
+  \resizebox{0.5\columnwidth}{!}{\includegraphics{map_everything4(1).jpg}}
   \caption{Map of measurement stations (green and red), dams (yellow) and
   Szeged (blue)\label{map}}
 \end{figure}
@@ -157,10 +157,10 @@ one of the following chapters in more detail.
 \end{enumeratenumeric}
 \subsection{Cleaning the data}\label{clean}
 
-The dataset, which contains the daily waterlevels of each station, has some
-holes. Maybe a station was not yet buildt, the station was destroyed in a
-flood or the worker noting the values was sick. Also the river changes over
-time and old data might not be as useful as one might hope for.
+The dataset, which contains the daily water levels of each station, has some
+holes. Maybe a station was not yet built, the station was destroyed in a
+flood or the worker noting the values were inconsistent. Also the river changes over
+time and old data might not be as reliable as one might hope for.
 
 \begin{figure}[h]
   \raisebox{0.0\height}{\includegraphics[width=14.8741637150728cm,height=1.55942542306179cm]{protocol-1.pdf}}
@@ -168,13 +168,13 @@ time and old data might not be as useful as one might hope for.
   2020 (right)}
 \end{figure}
 
-This is why we want to choose the stations as well as the timeframe of data to
-use, for training and validation, carefully. We also need to find a way to
+Due to this we want to choose the stations as well as the time frame for training and validation, carefully. We also need to find a way to
 fill the remaining holes in the data. (see chapter \ref{imputation})
 
 As we want our model to be practical, we have to exclude all measurement
-stations, which are not in use today, from the input data we feed to the ML
-model. Also if a station started recording no more than several weeks ago, its
+stations, which are not in use today. 
+%from the input data we feed to the ML model. 
+Also if a station started recording no more than several weeks ago, its
 data will not be useful right now, as we would have to fill in most of its
 holes. Data, we fill the holes with, will at best not influence the result.
 There is no way for filled in data to provide new, useful and correct
@@ -194,15 +194,15 @@ with incomplete data, that would only leave us with around a dozen stations.
 
 \subsection{Splitting the data}
 
-As the riverbed constantly changes (errosion, floods, dams, {\textdots}) we
-want to choose the training data with that in mind. If we would, for example,
+As the riverbed constantly changes (e.g. erosion, floods, dams), we
+want to choose the training data with that in mind. For instance, if we would
 do the usual 80/20 spilt of training and validation data, so, train on the
 older 80\% and validate on the newer 20\%, then the model mostly knows how to
-predict floods from 50 years ago. Would it perform much worse with modern
-floods, if the riversystem had changed?
+predict floods from 50 years ago. Would it perform much worse with newer
+floods, if the river system had changed?
 
 To get an idea on how to spilt the data, we did research on the floods and
-dams of the Tisza
+dams of the Tisza.
 
 \begin{table}[h]
   \begin{tabular}{|l|l|l|l|l|}
@@ -256,7 +256,7 @@ Yet there are some remaining holes, which we will now try to fill, without
 imprinting further information onto the dataset. For this imputation step, we
 will also be able to use data from the stations previously discarded.
 
-We decided to fill missing data of station $A$ with the data of station $B$
+We decided to fill the missing data of station $A$ with the data of station $B$
 via linear regression, if $B$ is the station with the highest correlated
 measurements to station $A$. We choose this strategy in order to keep the
 added information to a minimum, while keeping the algorithm relatively simple.
@@ -268,9 +268,9 @@ The pseudocode for our implemented strategy is the following:
 \quad foreach station $B$ with $\tmop{days}_{\tmop{missing}} (A) \neq
 \tmop{days}_{\tmop{missing}} (B)$:
 
-\qquad calculate the pearson correlation of $A$ and $B$
+\qquad calculate and store the Pearson correlation of $A$ and $B$
 
-\qquad if the p-value is greater than a bound disregard $B$
+\qquad if the p-value is greater than a threshold, then disregard $B$
 
 \quad find and store the station $B$ with the highest correlation to $A$
 
@@ -281,7 +281,7 @@ foreach station $A$ with missing data:
 What if A and B share missing days? Only the missing data, which is not
 shared, can be filled in. However running the algorithm multiple times will
 fill all holes eventually (this only works as the dataset is sufficiently
-dense). With this dataset there are 2 iterations needed, to fill all holes.
+dense). With this dataset 2 iterations were needed, to fill all holes.
 
 \subsection{Reducing Dimensionality}
 
@@ -295,10 +295,10 @@ several statistical approaches:
 
 For $i \in I = \{ - 5, \ldots, 50 \}$
 
-Calculate the correlation $c_{i, X}$ of the water level between Szeged at day
-$d$ and Station $X$ at day $d - i$.
+Calculate the correlation $c_{i, X}$ of the water level between station "Szeged" at day
+$d$ and station $X$ at day $d - i$.
 
-$t_X = \tmop{argmax}_{i \in I} c_{i, X}$ then gives an estimate on how long it
+Then $t_X = \tmop{argmax}_{i \in I} \;c_{i, X}$ gives an estimate on how long it
 takes for $X$ to influence Szeged.
 
 \begin{figure}[h]
@@ -333,8 +333,8 @@ Distance Correlation}
 
 \subsubsection{Correlation $\neq$ Causality}
 
-In general, correlation does not imply causaltiy. However, since we are
-looking at a river we know there exists atleast some level of causality since
+In general, correlation does not imply causality. However, since we are
+looking at a river we know there exists at least some level of causality since
 water flows downstream. The results we measured via correlation, also support
 this direction of informational flow. We even found, that stations downstream
 of Szeged show negative delay, further supporting the validity of the test
@@ -343,7 +343,7 @@ performed above.
 \subsubsection{Conclusion}
 
 With each correlation measure we got similar results. Except for less than a
-hand full of stations, their maximally correlated delay was 7 days or less. So
+handful of stations, their maximally correlated delay was 7 days or less. So
 dropping stations, with the suggested argument of them being too far away, did
 not work.
 
@@ -369,12 +369,11 @@ We mainly considered 3 different models.
 
 \subsection{Implementation}
 
-All the models were implemented in a pytorch environment. In the process of
+All the models were implemented in a PyTorch environment. In the process of
 making the prediction, using a neural network, a critical step is the data
 modification and split. In the case of all the models, fifteen days of data
 from the past was used to predict the following seven days. So the data should
-be fed to the networks as an input of a {\tmem{fifteen by the number of
-stations}}-sized matrix and the labels, as the ground truth data of the
+be fed to the networks as an input of a $15 \times K$-sized matrix (where $K$ is the number of stations used) and the ground truth data of the
 following predicted days are a seven-number long vector representing the water
 levels in Szeged.
 
@@ -441,7 +440,7 @@ Another highly significant part of building a neural network is deciding what
 kind of loss function is used. We tried several kinds of functions. At first,
 the widely used L2 loss function, which is the mean square error between the
 ground truth and the prediction. The test showed that using this many stations
-will give not-so-well results for the first few days but relatively good ones
+will give inaccurate results for the first few days but relatively good ones
 for the end. To make the network focus better the following days ahead, the
 first idea was to use a weighted mean square error, having linear or squared
 weights, by dividing the difference by the number of days being ahead of the
@@ -494,7 +493,7 @@ batch size was eight.
 
 We utilized four distinct metrics for the verification of our models. The code
 employed for this purpose is largely adapted from the existing verification
-code provided by our tutor. The validation dataset, spanning from 2005 to
+code provided by our instructor. The validation dataset, spanning from 2005 to
 2020, was employed for this analysis.
 
 \
@@ -592,7 +591,15 @@ version conflicts.
 
 \section{Instructor's assessment}
 
-TODO
+The work with the team was arranged as an R$\&$D project is structured in the industry. In the morning of the first day, we had a detailed discussion about the topic of the problem: scientific background, data collection methods, structure of the data, previous results and goals for the week. They showed great attention and raised good questions already in the very first discussion, which gave me a good impression about the participants. We planned with three further catch-up sessions during the week (Monday, Wednesday and Friday afternoons), but we had short discussions every day, since they had several, equally promising and creative ideas about data processing and model building, thus I was eager to have more sessions with them.
+
+None of them were an expert in machine learning algorithms applied for time series (which is a complex topic), but they were able to ramp up the required knowledge in a short period of time: this skill will be very valuable at their work in the industry. I was also satisfied with their ability for system understanding, which led to have good and creative improvement ideas at different steps of the machine learning pipeline (data imputation, ML model architecture, loss functions) even in the early stage of the work. Despite there were some flawed or not well thought ideas during the week, we could discuss the problematic points all the time and they were improved them until the next meeting.
+
+Since this project was really implementation-heavy, fortunately everybody was familiar with programming in the necessary level and there were leaders in the coding of the larger blocks of the code. They got used to programming in a collaborative manner in short time, which spared a lot of time for them and this enabled them to try a lot of ideas and execute several model trainings. I was satisfied to see that they can use and build into their code the previously developed research code without bigger issues.
+
+It was clear from the second day, that they were able to discuss the strengths of the individual members of the group and they could distribute very quickly the work of the complex task, which indicated their capability for teamwork. As I have seen there was no real conflict in the team: if someone was responsible for a concept or code, he explained the details, but it was clear that everybody played a part in that specific part. They could also prove their excellent teamwork at the presentation of the Modelling Week, where everybody contributed to the talk.
+
+In summary, I was very satisfied with their work they did during the intensive 5 days of the ECMI Modelling Week. They implemented good improvement ideas for water level prediction and they were able to outreach the previous performance results for later days of the prediction. In my opinion, they got a complete picture about data-driven algorithm development in a team, which is a fruitful experience for their later career in this field.
 
 \
 
