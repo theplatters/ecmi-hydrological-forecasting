@@ -1,0 +1,26 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Introduction}{4}{section.1}%
+\contentsline {section}{\numberline {2}Report}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Overview}{4}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Cleaning the data}{5}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Splitting the data}{6}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Data imputation}{7}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Reducing Dimensionality}{8}{subsection.2.5}%
+\contentsline {subsubsection}{\numberline {2.5.1}Shifted correlation}{8}{subsubsection.2.5.1}%
+\contentsline {subsubsection}{\numberline {2.5.2}Other correlation measures}{8}{subsubsection.2.5.2}%
+\contentsline {subsubsection}{\numberline {2.5.3}Correlation $\neq $ Causality}{8}{subsubsection.2.5.3}%
+\contentsline {subsubsection}{\numberline {2.5.4}Conclusion}{9}{subsubsection.2.5.4}%
+\contentsline {subsection}{\numberline {2.6}Choosing Models}{9}{subsection.2.6}%
+\contentsline {subsection}{\numberline {2.7}Implementation}{10}{subsection.2.7}%
+\contentsline {subsubsection}{\numberline {2.7.1}LSTM}{11}{subsubsection.2.7.1}%
+\contentsline {subsubsection}{\numberline {2.7.2}CNN}{11}{subsubsection.2.7.2}%
+\contentsline {subsubsection}{\numberline {2.7.3}Dense NN}{12}{subsubsection.2.7.3}%
+\contentsline {subsubsection}{\numberline {2.7.4}Custom loss functions}{12}{subsubsection.2.7.4}%
+\contentsline {subsubsection}{\numberline {2.7.5}Learning rate}{14}{subsubsection.2.7.5}%
+\contentsline {subsection}{\numberline {2.8}Verification of Results}{14}{subsection.2.8}%
+\contentsline {section}{\numberline {3}Discussion}{14}{section.3}%
+\contentsline {section}{\numberline {4}Conclusion}{16}{section.4}%
+\contentsline {section}{\numberline {5}Group work dynamics}{16}{section.5}%
+\contentsline {section}{\numberline {6}Instructor's assessment}{17}{section.6}%
+\contentsline {section}{\numberline {A}Code}{18}{appendix.A}%
+\contentsline {section}{\numberline {B}Stations}{18}{appendix.B}%

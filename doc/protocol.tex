@@ -51,7 +51,6 @@ University of Szeged, Bolyai Institute
 \title{Application of data-driven models in hydrological forecasting}
 
 \author{
-  
   \tmaffiliation{Zsolt Vizi (University of Szeged, Hungary)\\
   P{\'e}ter Koz{\'a}k (Water Management Directorate of Als{\'o}-Tisza,
   Hungary)\\
@@ -314,7 +313,7 @@ What if $A$ and $B$ share missing days? Only the missing data, which is not
 shared, can be filled in. However running the algorithm multiple times will
 fill all holes eventually (this only works as the dataset is sufficiently
 dense). With this dataset 2 iterations were needed, to fill all holes.
-
+The implementation in python can be found in the GitHub repository under \texttt{notebooks/prepare\_data.ipynb}
 \subsection{Reducing Dimensionality}
 
 We now have complete water level data from 48 stations. Reducing the number of
@@ -352,20 +351,23 @@ influence Szeged.
 \end{tmparmod}{\medskip}
 
 \begin{figure}[h]
-  \raisebox{0.0\height}{\includegraphics[width=7.4370818575364cm,height=5.62314705496524cm]{protocol-5.pdf}}
-  \caption{Graph: x-axis: $i$, y-axis: $c_i$ for a Station, $p_{\tmop{val}}
+  \centering
+  \raisebox{0.0\height}{\includegraphics[width=9cm]{Figure_correlation.png}}
+  \caption{Graph: x-axis: $i$, y-axis: $c_i$ for station 1515 (see Appendix), $p_{\tmop{val}}
   (t_X) \ll 10^{- 3}$, 2004-2006}
 \end{figure}
 
 \
 
-If we now visualize $t_X$ for every station on a map, we can see if the
+If we now visualize $t_X$ for every station on a map (figure \ref{fig:5}), we can see if the
 results appear to make sense. Stations further upstream take longer to
 influence the water levels in Szeged.
 
 \begin{figure}[h]
-  \raisebox{0.0\height}{\includegraphics[width=11.899334251607cm,height=8.51915256460711cm]{protocol-6.pdf}}
+  \centering
+  \raisebox{0.0\height}{\includegraphics[width=11.899334251607cm,height=8.51915256460711cm]{Figure_5.png}}
   \caption{Stations colorized by $t_X$}
+  \label{fig:5}
 \end{figure}
 
 Note: The light dot along the Tisza is right at one of the dams.
@@ -374,12 +376,23 @@ Note: The light dot along the Tisza is right at one of the dams.
 
 In the procedure described above we initially used the regular Pearson
 correlation. We then repeated the procedure with Spearman and Distance
-correlation. We got similar results:
+correlation. As seen in Figure \ref{fig:6} and Figure \ref{fig:7} the results are very similar.
 
-\tmfloat{h}{small}{figure}{\raisebox{0.0\height}{\includegraphics[width=5.94965892693165cm,height=4.25955988455988cm]{protocol-7.pdf}}}{Map,
-Spearman
-Correlation}\tmfloat{h}{small}{figure}{\raisebox{0.0\height}{\includegraphics[width=5.94965892693165cm,height=4.25955988455988cm]{protocol-8.pdf}}}{Map,
-Distance Correlation}
+\begin{figure}[h]
+  \centering
+  \raisebox{0.0\height}{\includegraphics[height=5cm]{Figure_6.png}}
+  \caption{Stations colorized by $t_X$}
+  \label{fig:6}
+\end{figure}
+
+\begin{figure}[h]
+
+  \centering
+  \raisebox{0.0\height}{\includegraphics[height=5cm]{Figure_7.png}}
+  \caption{Stations colorized by $t_X$}
+  \label{fig:7}
+\end{figure}
+
 
 \subsubsection{Correlation $\neq$ Causality}
 
@@ -685,14 +698,6 @@ results for later days of the prediction. In my opinion, they got a complete
 picture about data-driven algorithm development in a team, which is a fruitful
 experience for their later career in this field.
 
-\section{Links}
-
-Google Colab:
-\href{https://colab.research.google.com/drive/1ZobMWBW76xJHmeTsbXmjmgCzcv5sGrSV?usp=sharing}{work
-notebook and LSTM}
-
-Google Colab:
-\href{https://colab.research.google.com/drive/1TM0TM2p8cphnl7WuYu9bTIFMF2lW8gyv?usp=sharing}{CNN}
 
 \begin{thebibliography}{1}
   \bibitem[1]{WaterLevel2023}\label{docs-internal-guid-0a5e5cca-7fff-6f48-cf8a-a203f7614dd1}Zsolt
@@ -701,5 +706,19 @@ Google Colab:
   level prediction with various machine learning algorithms for a lowland
   river. {\newblock}2023.{\newblock}
 \end{thebibliography}
+
+\appendix
+\section{Code}
+\begin{itemize}
+\item GitHub repository: \href{https://github.com/theplatters/ecmi-hydrological-forecasting}{data imputation and validation}
+\item Google Colab: \href{https://colab.research.google.com/drive/1ZobMWBW76xJHmeTsbXmjmgCzcv5sGrSV?usp=sharing}{work
+notebook and LSTM}
+\item Google Colab: \href{https://colab.research.google.com/drive/1TM0TM2p8cphnl7WuYu9bTIFMF2lW8gyv?usp=sharing}{CNN}
+\end{itemize}
+
+\section{Stations}
+A table of stations and their metadata can be found in the GitHub repository under \href{https://github.com/theplatters/ecmi-hydrological-forecasting/blob/main/doc/stations.csv}{\texttt{docs/stations.csv}}
+
+
 
 \end{document}
